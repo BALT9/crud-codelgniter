@@ -7,6 +7,7 @@
     
 </head>
 <body>
-    <h1>HOla</h1>
+    <h1>Hola</h1>
+    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ipsam, eaque ratione provident aut magni, excepturi consequatur maiores repudiandae nemo corporis incidunt eum non ad fuga fugiat voluptas ab suscipit? Aperiam!</p>
 </body>
 </html>
