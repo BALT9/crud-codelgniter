@@ -4,20 +4,33 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\Continente;
+use App\Models\Pais;
 use CodeIgniter\HTTP\ResponseInterface;
 
 class ContinenteController extends BaseController
 {
-    
-    public function listar(){
-        $continenteModel = new Continente();
+
+    public function listar()
+    {
+        $continenteModel = new \App\Models\Continente();
+        $paisModel = new \App\Models\Pais();
 
         $data['continentes'] = $continenteModel->findAll();
 
-        // Enviar datos a la vista
+        // Verifica si se está filtrando por un continente específico
+        $codigoContinente = $this->request->getGet('continente');
+
+        if ($codigoContinente) {
+            $data['paises'] = $paisModel->where('codigo_continente', $codigoContinente)->findAll();
+            $data['continenteActivo'] = $codigoContinente;
+        } else {
+            $data['paises'] = [];
+        }
+
         return view('welcome_message', $data);
     }
-    
+
+
     public function crearContinente()
     {
         $continenteModel = new Continente();
@@ -54,4 +67,5 @@ class ContinenteController extends BaseController
 
         return redirect()->to('/')->with('mensaje', 'continente agregado correctamente');
     }
+
 }
