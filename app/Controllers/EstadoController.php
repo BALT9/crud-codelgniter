@@ -75,4 +75,54 @@ class EstadoController extends BaseController
         // Redirigir con mensaje
         return redirect()->to('/estado/listar?pais_id=' . $codigoPais)->with('mensaje', 'Estado agregado correctamente');
     }
+
+    public function eliminarEstado($id)
+    {
+        $estadoModel = new Estado();
+
+        // Obtener el estado para saber el país y redirigir correctamente
+        $estado = $estadoModel->find($id);
+
+        $codigoPais = $estado['codigo_pais'];
+
+        $estadoModel->delete($id);
+
+        return redirect()->to('/estado/listar?pais_id=' . $codigoPais)->with('mensaje', 'Estado eliminado correctamente');
+    }
+
+    public function actualizarEstado()
+    {
+        // Inicializar modelos
+        $estadoModel = new Estado();
+        $paisModel = new Pais();
+
+        // Obtener los datos del formulario
+        $codigoEstado = $this->request->getPost('codigo_estado');
+        $nombreEstado = $this->request->getPost('nombre_estado');
+        $codigoPais = $this->request->getPost('codigo_pais');
+
+        // Verificar que el estado exista
+        $estado = $estadoModel->find($codigoEstado);
+        if (!$estado) {
+            return redirect()->back()->with('error', 'Estado no encontrado');
+        }
+
+        // Obtener el código de continente desde el país
+        $pais = $paisModel->find($codigoPais);
+        
+        $codigoContinente = $pais['codigo_continente'];
+
+        // Preparar los datos para actualizar
+        $data = [
+            'nombre_estado' => $nombreEstado,
+            'codigo_pais' => $codigoPais,
+            'codigo_continente' => $codigoContinente,
+        ];
+
+        // Actualizar el estado en la base de datos
+        $estadoModel->update($codigoEstado, $data);
+
+        // Redirigir con un mensaje de éxito
+        return redirect()->to('/estado/listar?pais_id=' . $codigoPais)->with('mensaje', 'Estado actualizado correctamente');
+    }
 }

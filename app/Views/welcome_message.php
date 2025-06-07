@@ -92,8 +92,12 @@
         <!-- MODAL ESTADO -->
         <div class="modal fade" id="modalEstado" tabindex="-1" aria-labelledby="modalEstadoLabel" aria-hidden="true">
             <div class="modal-dialog">
-                <form action="<?= site_url('/estado/crearEstado') ?>" method="POST">
+                <!-- Formulario para Crear o Editar un Estado -->
+                <form id="formEstado" action="<?= site_url('/estado/crearEstado') ?>" method="POST">
                     <?= csrf_field() ?>
+                    <!-- Campo Oculto para Código de Estado -->
+                    <input type="hidden" id="codigo_estado" name="codigo_estado" />
+
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="modalEstadoLabel">Agregar Estado</h1>
@@ -102,7 +106,7 @@
                         <div class="modal-body">
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="inputEstado" name="nombre_estado" placeholder="Nombre del Estado" required />
-                                <label for="inputEstado">Nombre de Estado</label>
+                                <label for="inputEstado">Nombre del Estado</label>
                             </div>
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="selectPaisEstado" name="codigo_pais" required>
@@ -124,7 +128,6 @@
                 </form>
             </div>
         </div>
-
 
 
         <!-- GRID DE 3 COLUMNAS -->
@@ -252,7 +255,6 @@
                                 <th>Código</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
-                                <th>Ver</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -262,26 +264,19 @@
                                     <td><?= esc($estado['nombre_estado']) ?></td>
                                     <td>
                                         <div class="d-flex gap-2">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-warning btn-editar-estado"
+                                            <!-- Botón de Editar -->
+                                            <button type="button" class="btn btn-sm btn-warning btn-editar"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#modalEstado"
                                                 data-id="<?= $estado['codigo_estado'] ?>"
                                                 data-nombre="<?= esc($estado['nombre_estado']) ?>"
-                                                data-pais="<?= $estado['codigo_pais'] ?>">
+                                                data-pais-id="<?= $estado['codigo_pais'] ?>">
                                                 Editar
                                             </button>
                                             <form action="<?= site_url('/estado/eliminar/' . $estado['codigo_estado']) ?>" method="post">
                                                 <?= csrf_field() ?>
                                                 <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
                                             </form>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center">
-                                            <!-- Puedes personalizar este enlace si tienes ciudades u otra entidad anidada -->
-                                            <span class="text-muted">-</span>
                                         </div>
                                     </td>
                                 </tr>
@@ -347,6 +342,30 @@
             });
         });
     </script>
+
+    <script>
+        document.querySelectorAll('.btn-editar').forEach(button => {
+            button.addEventListener('click', () => {
+                // Obtener los datos del botón
+                const id = button.getAttribute('data-id');
+                const nombre = button.getAttribute('data-nombre');
+                const paisId = button.getAttribute('data-pais-id');
+
+                // Establecer los valores en el formulario del modal
+                document.getElementById('codigo_estado').value = id; // Establece el ID del estado
+                document.getElementById('inputEstado').value = nombre; // Establece el nombre del estado
+                document.getElementById('selectPaisEstado').value = paisId; // Establece el país
+
+                // Cambiar el título del modal a "Editar Estado"
+                document.getElementById('modalEstadoLabel').textContent = 'Editar Estado';
+                // Cambiar el texto del botón para reflejar la actualización
+                document.getElementById('btnGuardarEstado').textContent = 'Actualizar Estado';
+                // Cambiar la acción del formulario para que se actualice el estado
+                document.getElementById('formEstado').action = '<?= site_url("/estado/actualizarEstado") ?>'; // Ruta para actualizar el estado
+            });
+        });
+    </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
