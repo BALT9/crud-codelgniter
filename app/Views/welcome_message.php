@@ -1,298 +1,130 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Continentes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" />
-</head>
+<?= $this->include('Layouts/Header') ?>
 
 <body>
-    <div class="container mt-4">
+    <div class="container mt-5">
         <!-- MODAL CONTINENTE -->
-        <div class="modal fade" id="modalContinente" tabindex="-1" aria-labelledby="modalContinenteLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <form id="formContinente" method="post" action="<?= site_url('/continente') ?>">
-                    <?= csrf_field() ?>
-                    <input type="hidden" id="codigo_continente" name="codigo_continente" />
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="modalContinenteLabel">Agregar Continente</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-floating mb-3">
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="nombre_continente"
-                                    name="nombre_continente"
-                                    placeholder="Nombre del Continente"
-                                    required />
-                                <label for="nombre_continente">Nombre de Continente</label>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary" id="btnGuardarContinente">Guardar Continente</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <?= $this->include('Modals/Continente') ?>
 
         <!-- MODAL PAIS -->
-        <div class="modal fade" id="modalPais" tabindex="-1" aria-labelledby="modalPaisLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <form id="formPais" action="/pais" method="POST">
-                    <?= csrf_field() ?>
-                    <input type="hidden" id="codigo_pais" name="codigo_pais" />
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="modalPaisLabel">Agregar País</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-floating mb-3">
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="inputPais"
-                                    name="nombre_pais"
-                                    placeholder="Nombre del País"
-                                    required />
-                                <label for="inputPais">Nombre de País</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <select
-                                    class="form-select"
-                                    id="selectContinentePais"
-                                    name="codigo_continente"
-                                    required>
-                                    <option value="" disabled selected>Selecciona un continente</option>
-                                    <?php foreach ($continentes as $continente): ?>
-                                        <option value="<?= $continente['codigo_continente'] ?>">
-                                            <?= esc($continente['nombre_continente']) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <label for="selectContinentePais">Continente</label>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary" id="btnGuardarPais">Guardar País</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
+        <?= $this->include('Modals/Pais') ?>
         <!-- MODAL ESTADO -->
-        <div class="modal fade" id="modalEstado" tabindex="-1" aria-labelledby="modalEstadoLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <!-- Formulario para Crear o Editar un Estado -->
-                <form id="formEstado" action="<?= site_url('/estado/crearEstado') ?>" method="POST">
-                    <?= csrf_field() ?>
-                    <!-- Campo Oculto para Código de Estado -->
-                    <input type="hidden" id="codigo_estado" name="codigo_estado" />
-
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="modalEstadoLabel">Agregar Estado</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="inputEstado" name="nombre_estado" placeholder="Nombre del Estado" required />
-                                <label for="inputEstado">Nombre del Estado</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <select class="form-select" id="selectPaisEstado" name="codigo_pais" required>
-                                    <option value="" disabled selected>Selecciona un País</option>
-                                    <?php foreach ($paises as $pais): ?>
-                                        <option value="<?= $pais['codigo_pais'] ?>">
-                                            <?= esc($pais['nombre_pais']) ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                                <label for="selectPaisEstado">País</label>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" class="btn btn-primary" id="btnGuardarEstado">Guardar Estado</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-
+        <?= $this->include('Modals/Estado') ?>
 
         <!-- GRID DE 3 COLUMNAS -->
         <div class="row">
-            <div class="col-md-4 mb-4">
-                <button
-                    type="button"
-                    class="btn btn-primary mb-3"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalContinente"
-                    id="btnAgregarContinente">
-                    Agregar Continente
-                </button>
+            <div class="row">
+                <!-- Columna de Continentes -->
+                <div class="col-md-4 mb-4">
+                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalContinente">
+                        Agregar Continente
+                    </button>
 
-                <table class="table table-bordered table-striped">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Codigo</th>
-                            <th>Continente</th>
-                            <th>Acciones</th>
-                            <th>Ver</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($continentes as $continente): ?>
-                            <tr>
-                                <td><?= $continente['codigo_continente'] ?></td>
-                                <td><?= $continente['nombre_continente'] ?></td>
-                                <td>
-                                    <div class="d-flex gap-2">
+                    <?php foreach ($continentes as $continente): ?>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title"><?= esc($continente['nombre_continente']) ?></h5>
+                                <h6 class="card-subtitle mb-2 text-muted">Código: <?= esc($continente['codigo_continente']) ?></h6>
+
+                                <div class="d-flex gap-2 mb-2">
+                                    <button
+                                        class="btn btn-sm btn-warning btn-editar"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalContinente"
+                                        data-id="<?= $continente['codigo_continente'] ?>"
+                                        data-nombre="<?= esc($continente['nombre_continente']) ?>">
+                                        Editar
+                                    </button>
+                                    <form action="<?= site_url('/eliminar/' . $continente['codigo_continente']) ?>" method="post">
+                                        <?= csrf_field() ?>
+                                        <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                    </form>
+                                </div>
+
+                                <a href="<?= site_url('/?continente=' . $continente['codigo_continente']) ?>" class="btn btn-sm btn-success w-100">Ver Países</a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <!-- Columna de Países -->
+                <div class="col-md-4 mb-4">
+                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalPais">
+                        Agregar País
+                    </button>
+
+                    <?php if (empty($paises)): ?>
+                        <div class="alert alert-info">Selecciona un continente para ver sus países.</div>
+                    <?php else: ?>
+                        <?php foreach ($paises as $pais): ?>
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?= esc($pais['nombre_pais']) ?></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Código: <?= esc($pais['codigo_pais']) ?></h6>
+
+                                    <div class="d-flex gap-2 mb-2">
                                         <button
-                                            type="button"
-                                            class="btn btn-sm btn-warning btn-editar"
+                                            class="btn btn-sm btn-warning btn-editar-pais"
                                             data-bs-toggle="modal"
-                                            data-bs-target="#modalContinente"
-                                            data-id="<?= $continente['codigo_continente'] ?>"
-                                            data-nombre="<?= $continente['nombre_continente'] ?>">
+                                            data-bs-target="#modalPais"
+                                            data-id="<?= esc($pais['codigo_pais']) ?>"
+                                            data-nombre="<?= esc($pais['nombre_pais']) ?>"
+                                            data-continente="<?= esc($pais['codigo_continente']) ?>">
                                             Editar
                                         </button>
-                                        <form action="<?= site_url('/eliminar/' . $continente['codigo_continente']) ?>" method="post">
+                                        <form action="<?= site_url('/pais/eliminar/' . $pais['codigo_pais']) ?>" method="post">
                                             <?= csrf_field() ?>
                                             <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
                                         </form>
                                     </div>
-                                </td>
-                                <td>
-                                    <div class="text-center">
-                                        <a href="<?= site_url('/?continente=' . $continente['codigo_continente']) ?>" class="btn btn-sm btn-success">Ver Países</a>
-                                    </div>
-                                </td>
-                            </tr>
+
+                                    <a href="<?= site_url('/estado/listar?pais_id=' . $pais['codigo_pais']) ?>" class="btn btn-sm btn-success w-100">Ver Estados</a>
+                                </div>
+                            </div>
                         <?php endforeach; ?>
-                    </tbody>
-                </table>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Columna de Estados -->
+                <div class="col-md-4 mb-4">
+                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalEstado">
+                        Agregar Estado
+                    </button>
+
+                    <?php if (isset($estados) && !empty($estados)): ?>
+                        <h5 class="mb-3">Estados del país: <?= esc($paisActivo) ?></h5>
+                        <?php foreach ($estados as $estado): ?>
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?= esc($estado['nombre_estado']) ?></h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Código: <?= esc($estado['codigo_estado']) ?></h6>
+
+                                    <div class="d-flex gap-2">
+                                        <button
+                                            class="btn btn-sm btn-warning btn-editar"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalEstado"
+                                            data-id="<?= esc($estado['codigo_estado']) ?>"
+                                            data-nombre="<?= esc($estado['nombre_estado']) ?>"
+                                            data-pais-id="<?= esc($estado['codigo_pais']) ?>">
+                                            Editar
+                                        </button>
+                                        <form action="<?= site_url('/estado/eliminar/' . $estado['codigo_estado']) ?>" method="post">
+                                            <?= csrf_field() ?>
+                                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="alert alert-info">Selecciona un Pais para ver sus estados.</div>
+                    <?php endif; ?>
+                </div>
             </div>
-
-            <div class="col-md-4 mb-4">
-                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalPais">
-                    Agregar País
-                </button>
-                <table class="table table-bordered table-striped">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Codigo</th>
-                            <th>Pais</th>
-                            <th>Acciones</th>
-                            <th>Ver</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tbodyPaises">
-                        <?php if (empty($paises)): ?>
-                            <tr>
-                                <td colspan="4" class="text-center">Selecciona un continente para ver sus países.</td>
-                            </tr>
-                        <?php else: ?>
-                            <?php foreach ($paises as $pais): ?>
-                                <tr>
-                                    <td><?= $pais['codigo_pais'] ?></td>
-                                    <td><?= $pais['nombre_pais'] ?></td>
-                                    <td>
-                                        <div class="d-flex gap-2">
-                                            <button
-                                                type="button"
-                                                class="btn btn-sm btn-warning btn-editar-pais"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#modalPais"
-                                                data-id="<?= $pais['codigo_pais'] ?>"
-                                                data-nombre="<?= htmlspecialchars($pais['nombre_pais'], ENT_QUOTES) ?>"
-                                                data-continente="<?= $pais['codigo_continente'] ?>">
-                                                Editar
-                                            </button>
-                                            <form action="<?= site_url('/pais/eliminar/' . $pais['codigo_pais']) ?>" method="post">
-                                                <?= csrf_field() ?>
-                                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="text-center">
-                                            <a href="<?= site_url('/estado/listar?pais_id=' . $pais['codigo_pais']) ?>" class="btn btn-sm btn-success">Ver Estados</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="col-md-4 mb-4">
-                <button
-                    type="button"
-                    class="btn btn-primary mb-3"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalEstado"
-                    id="btnAgregarEstado">
-                    Agregar Estado
-                </button>
-
-                <?php if (isset($estados) && !empty($estados)): ?>
-                    <h4>Estados del país: <?= esc($paisActivo) ?></h4>
-                    <table class="table table-bordered table-striped">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Código</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($estados as $estado): ?>
-                                <tr>
-                                    <td><?= esc($estado['codigo_estado']) ?></td>
-                                    <td><?= esc($estado['nombre_estado']) ?></td>
-                                    <td>
-                                        <div class="d-flex gap-2">
-                                            <!-- Botón de Editar -->
-                                            <button type="button" class="btn btn-sm btn-warning btn-editar"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#modalEstado"
-                                                data-id="<?= $estado['codigo_estado'] ?>"
-                                                data-nombre="<?= esc($estado['nombre_estado']) ?>"
-                                                data-pais-id="<?= $estado['codigo_pais'] ?>">
-                                                Editar
-                                            </button>
-                                            <form action="<?= site_url('/estado/eliminar/' . $estado['codigo_estado']) ?>" method="post">
-                                                <?= csrf_field() ?>
-                                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <p>No hay estados para este país o no se ha seleccionado uno.</p>
-                <?php endif; ?>
-            </div>
-
-
 
         </div>
-
     </div>
+
     <script>
         document.querySelectorAll('.btn-editar').forEach(button => {
             button.addEventListener('click', () => {
@@ -308,9 +140,7 @@
                 document.getElementById('formContinente').action = '<?= site_url('/actualizar') ?>'; // Ruta para actualizar
             });
         });
-    </script>
 
-    <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.btn-editar-pais').forEach(button => {
                 button.addEventListener('click', () => {
@@ -341,9 +171,7 @@
                 document.getElementById('formPais').action = '/pais'; // ruta para crear
             });
         });
-    </script>
 
-    <script>
         document.querySelectorAll('.btn-editar').forEach(button => {
             button.addEventListener('click', () => {
                 // Obtener los datos del botón
@@ -365,7 +193,6 @@
             });
         });
     </script>
-
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>

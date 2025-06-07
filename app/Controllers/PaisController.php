@@ -15,20 +15,32 @@ class PaisController extends BaseController
         $paisModel = new Pais();
         $continenteModel = new Continente();
 
-        // Filtrar países por continente
         $continenteId = $this->request->getGet('continente_id');
-        if ($continenteId) {
-            $data['paises'] = $paisModel->where('codigo_continente', $continenteId)->findAll();
-        } else {
-            $data['paises'] = $paisModel->findAll();
-        }
 
         // Obtener todos los continentes
         $data['continentes'] = $continenteModel->findAll();
 
-        // Puedes crear una vista 'pais/listar' o reutilizar alguna
+        // Inicializar variables
+        $data['paises'] = [];
+        $data['nombreContinenteActivo'] = '';
+
+        if ($continenteId) {
+            // Filtrar países por continente
+            $data['paises'] = $paisModel->where('codigo_continente', $continenteId)->findAll();
+
+            // Obtener nombre del continente activo
+            $continente = $continenteModel->find($continenteId);
+            if ($continente) {
+                $data['nombreContinenteActivo'] = $continente['nombre_continente'];
+            }
+        } else {
+            // Si no hay filtro, mostrar todos los países
+            $data['paises'] = $paisModel->findAll();
+        }
+
         return view('welcome_message', $data);
     }
+
 
     // Crear un país
     public function crearPais()
