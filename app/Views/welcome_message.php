@@ -1,7 +1,12 @@
 <?= $this->include('Layouts/Header') ?>
 
 <body>
-    <div class="container mt-5">
+
+    <?= $this->include('Modals/Hero') ?>
+    <div class="container my-5">
+
+        <!-- MODAL Hero -->
+
         <!-- MODAL CONTINENTE -->
         <?= $this->include('Modals/Continente') ?>
 
@@ -124,6 +129,8 @@
 
         </div>
     </div>
+
+    <?= $this->include('Modals/Footer') ?>
 
     <script>
         document.querySelectorAll('.btn-editar').forEach(button => {
