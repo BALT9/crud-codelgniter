@@ -16,7 +16,7 @@
         <?= $this->include('Modals/Estado') ?>
 
         <!-- GRID DE 3 COLUMNAS -->
-        <div class="row">
+        <div class="row" id="continente">
             <div class="row">
                 <!-- Columna de Continentes -->
                 <div class="col-md-4 mb-4">

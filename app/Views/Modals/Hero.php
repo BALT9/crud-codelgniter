@@ -14,7 +14,7 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav gap-3">
                 <li class="nav-item">
-                    <a class="nav-link text-white fw-semibold" aria-current="page" href="#modalContinente" data-bs-toggle="modal">Inicio</a>
+                    <a class="nav-link text-white fw-semibold" aria-current="page" href="/" data-bs-toggle="modal">Inicio</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link text-white fw-semibold" href="#continentes">Continentes</a>
